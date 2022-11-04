@@ -5,8 +5,8 @@ using UnityEngine;
 public class CamerMovement : MonoBehaviour
 {
     private float curXCameraRotation = 0.0f;
-    private const float maxXCameraRotation = 10;
-    private const float minXCameraRotation = -10;
+    private const float maxXCameraRotation = 15;
+    private const float minXCameraRotation = -15;
     private float cameraSpeed = 50.0f;
     // Start is called before the first frame update
     void Start()
@@ -17,15 +17,24 @@ public class CamerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Space))
+        if(Input.GetKey(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.Locked;
+           Cursor.lockState = CursorLockMode.None; 
+           Cursor.visible = true;
+
+            Debug.Log("Escape is pressed?");
         }
-        Debug.Log(-curXCameraRotation);
+        else
+        {
+           Cursor.lockState = CursorLockMode.Locked; 
+           Cursor.visible = false;
+        }
+        
+        //Debug.Log(-curXCameraRotation);
         if(Mathf.Abs(curXCameraRotation) <= maxXCameraRotation)
         {
-            var rot = Input.GetAxisRaw("Mouse Y");
-            curXCameraRotation += rot;
+            var vertRot = Input.GetAxisRaw("Mouse Y");
+            curXCameraRotation += vertRot;
             if(curXCameraRotation < minXCameraRotation)
             {
                 curXCameraRotation = minXCameraRotation;
@@ -34,10 +43,12 @@ public class CamerMovement : MonoBehaviour
             {
                 curXCameraRotation = maxXCameraRotation;
             }
-            Vector3 trans = new Vector3(-rot * Time.deltaTime * cameraSpeed, 0, 0);
+            Vector3 trans = new Vector3(-vertRot * Time.deltaTime * cameraSpeed, 0, 0);
             transform.Rotate(trans);
 
         }
+
+
         
 
     }
